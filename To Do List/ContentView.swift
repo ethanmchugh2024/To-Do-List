@@ -8,9 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var things = ["First thing", "Second thing", "Third thing", "Fourth Thing", "Fifth thing"]
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView{
+            List{
+                ForEach(things, id: \.self) { thing in
+                    Text(thing)
+                }
+                .onMove { indices, newOffset in
+                    things.move(fromOffsets: indices, toOffset: newOffset)
+                }
+                .onDelete{ indexSet in
+                    things.remove(atOffsets: indexSet)
+                }
+            }
+            .navigationBarTitle("Things", displayMode: .inline)
+            .navigationBarItems(leading: EditButton())
+        }
     }
 }
 
